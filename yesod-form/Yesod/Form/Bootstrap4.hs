@@ -155,8 +155,9 @@ renderBootstrap4 formLayout aform fragment = do
     let views = views' []
         has (Just _) = True
         has Nothing  = False
-        isHorizontalForm = formLayout == BootstrapHorizontalForm
-        helpId vid = vid <> "-help"
+        isHorizontalForm = case formLayout of
+          BootstrapHorizontalForm _ _ _ _ -> True
+          _ -> False
         -- TODO: Make it possible to switch `has-error` class to `has-warning` class
         widget = [whamlet|
             $newline never
@@ -172,7 +173,7 @@ renderBootstrap4 formLayout aform fragment = do
                     $if fvId view /= bootstrapSubmitId
                       <label
                         for=#{fvId view}
-                        :has $ fvTooltip view:aria-describedby=#{helpId $ fvId view}>
+                        :has $ fvTooltip view:aria-describedby=#{fvId view}-help>
                           #{fvLabel view}
                     ^{fvInput view}
                     ^{helpWidget view}
@@ -180,7 +181,7 @@ renderBootstrap4 formLayout aform fragment = do
                     $if fvId view /= bootstrapSubmitId
                       <label .sr-only
                         for=#{fvId view}
-                        :has $ fvTooltip view:aria-describedby=#{helpId $ fvId view}>
+                        :has $ fvTooltip view:aria-describedby=#{fvId view}-help>
                           #{fvLabel view}
                     ^{fvInput view}
                     ^{helpWidget view}
@@ -190,7 +191,7 @@ renderBootstrap4 formLayout aform fragment = do
                              .#{toOffset labelOffset}
                              .#{toColumn labelSize}
                              for=#{fvId view}
-                             :has $ fvTooltip view:aria-describedby=#{helpId $ fvId view}>
+                             :has $ fvTooltip view:aria-describedby=#{fvId view}-help>
                                #{fvLabel view}
                       <div .#{toOffset inputOffset} .#{toColumn inputSize}>
                         ^{fvInput view}
@@ -209,7 +210,7 @@ helpWidget view = [whamlet|
     $maybe err <- fvErrors view
       <div .form-control-feedback>#{err}
     $maybe tt <- fvTooltip view
-      <p ##{fvId view ++ "-help"}.form-text .text-muted>#{tt}
+      <p ##{fvId view}-help .form-text .text-muted>#{tt}
 |]
 
 
