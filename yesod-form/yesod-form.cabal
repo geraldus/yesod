@@ -52,6 +52,7 @@ library
                      Yesod.Form.Types
                      Yesod.Form.Functions
                      Yesod.Form.Bootstrap3
+                     Yesod.Form.Bootstrap4
                      Yesod.Form.Input
                      Yesod.Form.Fields
                      Yesod.Form.Jquery
